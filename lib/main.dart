@@ -284,3 +284,27 @@ Future<void> _openUrl(Uri url) async {
                         ),
                       ),
                     ),
+                    if (isWide) ...[
+                      const SizedBox(width: 40),
+                      Expanded(
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: ScaleTransition(
+                            scale: _scaleAnimation,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.network(
+                                'https://images.unsplash.com/photo-1605001011156-cbf0b0f67a51?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzQwfHxDYW5jZXIlMjBzdXBwb3J0JTIwdHJ1c3R8ZW58MHx8MHx8fDA%3D',
+                                fit: BoxFit.cover,
+                                height: 500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
