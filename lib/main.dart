@@ -9,3 +9,23 @@ void main() {
   timeDilation = 1.5;
   runApp(const HarakaAfyaWebsite());
 }
+class HarakaAfyaWebsite extends StatelessWidget {
+  const HarakaAfyaWebsite({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Haraka Afya Cancer Support Trust',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        textTheme: GoogleFonts.poppinsTextTheme(),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF006D77),
+          brightness: Brightness.light,
+        ),
+      ),
+      home: const LandingPage(),
+    );
+  }
+}
