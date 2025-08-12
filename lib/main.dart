@@ -54,3 +54,25 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
   final _donationUrl = Uri.parse('https://example.org/donate');
   final _email = 'info@harakaafya.org';
   final _phone = '+254 745 8432 29';
+
+    @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0, 0.5, curve: Curves.easeInOut),
+      ),
+    );
+    _scaleAnimation = Tween<double>(begin: 0.95, end: 1).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.3, 1, curve: Curves.easeOutBack),
+      ),
+    );
+    _animationController.forward();
+  }
