@@ -322,3 +322,26 @@ Future<void> _openUrl(Uri url) async {
                   ],
                 ),
               ),
+                child: Column(
+                children: [
+                  Text(
+                    'About Our Mission',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 800,
+                    child: Text(
+                      'Haraka Afya Cancer Support Trust is a community-first organization dedicated to reducing cancer mortality through early detection, patient support, and education. We mobilize local resources, run screening campaigns, and provide emotional and financial support to patients and families.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: colorScheme.onSurface.withOpacity(0.8),
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
