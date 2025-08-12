@@ -488,3 +488,66 @@ Future<void> _openUrl(Uri url) async {
               ),
             ),
           ),
+  // Team Section
+          SliverToBoxAdapter(
+            key: _teamKey,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    colorScheme.primaryContainer,
+                    colorScheme.primaryContainer.withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Meet Our Team',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Passionate professionals dedicated to making a difference',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: colorScheme.onPrimaryContainer.withOpacity(0.8),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: isWide ? 1200 : 600,
+                    child: Wrap(
+                      spacing: 40,
+                      runSpacing: 40,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        _buildTeamMember(
+                          'Ridge Junior Abuto',
+                          'Founder & CEO',
+                          'https://images.unsplash.com/photo-1745163190343-fe6f1a3aaa1c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTZ8fG1lbiUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D',
+                        ),
+                        _buildTeamMember(
+                          'Samuel Otieno',
+                          'Community Lead',
+                          'https://images.unsplash.com/photo-1662638035662-455f32fd02ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzJ8fG1lbiUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D',
+                        ),
+                        _buildTeamMember(
+                          'Martha Kimani',
+                          'Volunteer Coordinator',
+                          'https://images.unsplash.com/photo-1611417361507-7d77bbc20a73?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fHdvbWVuJTIwaW1hZ2VzfGVufDB8fDB8fHww',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
