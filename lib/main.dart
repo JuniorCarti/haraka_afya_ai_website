@@ -308,3 +308,17 @@ Future<void> _openUrl(Uri url) async {
               ),
             ),
           ),
+ // About Section
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surface,
+                    colorScheme.surface.withOpacity(0.9),
+                  ],
+                ),
+              ),
