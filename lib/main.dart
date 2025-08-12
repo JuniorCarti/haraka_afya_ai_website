@@ -540,8 +540,8 @@ Future<void> _openUrl(Uri url) async {
                           'https://images.unsplash.com/photo-1662638035662-455f32fd02ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzJ8fG1lbiUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D',
                         ),
                         _buildTeamMember(
-                          'Martha Kimani',
-                          'Volunteer Coordinator',
+                          'Joy Mutanu',
+                          'Co-Founder',
                           'https://images.unsplash.com/photo-1611417361507-7d77bbc20a73?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fHdvbWVuJTIwaW1hZ2VzfGVufDB8fDB8fHww',
                         ),
                       ],
