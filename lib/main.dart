@@ -424,3 +424,67 @@ Future<void> _openUrl(Uri url) async {
               ),
             ),
           ),
+                // Programs Section
+          SliverToBoxAdapter(
+            key: _programsKey,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surface,
+                    colorScheme.surface.withOpacity(0.9),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Our Programs & Services',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: isWide ? 1200 : 600,
+                    child: Wrap(
+                      spacing: 24,
+                      runSpacing: 24,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        _buildProgramCard(
+                          Icons.health_and_safety,
+                          'Screening & Education',
+                          'Community screening events & health education',
+                          colorScheme.primary,
+                        ),
+                        _buildProgramCard(
+                          Icons.psychology,
+                          'Counselling',
+                          'One-on-one emotional & psychological support',
+                          colorScheme.secondary,
+                        ),
+                        _buildProgramCard(
+                          Icons.group,
+                          'Support Groups',
+                          'Peer support & survivor networks',
+                          colorScheme.tertiary,
+                        ),
+                        _buildProgramCard(
+                          Icons.favorite,
+                          'Financial Assistance',
+                          'Support for treatment costs & transport',
+                          colorScheme.error,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
