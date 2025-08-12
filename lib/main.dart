@@ -190,3 +190,97 @@ Future<void> _openUrl(Uri url) async {
               ),
             ),
           ),
+                    // Hero Section
+          SliverToBoxAdapter(
+            key: _heroKey,
+            child: Container(
+              height: isWide ? 700 : 600,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    colorScheme.primary.withOpacity(0.9),
+                    colorScheme.primary.withOpacity(0.7),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: isWide ? 80 : 24,
+                  vertical: 40,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: FadeTransition(
+                        opacity: _fadeAnimation,
+                        child: ScaleTransition(
+                          scale: _scaleAnimation,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: isWide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Haraka Afya Cancer Support Trust',
+                                style: TextStyle(
+                                  fontSize: isWide ? 48 : 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.onPrimary,
+                                  height: 1.2,
+                                ),
+                                textAlign: isWide ? TextAlign.left : TextAlign.center,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Supporting patients and families through cancer care, awareness & early detection.',
+                                style: TextStyle(
+                                  fontSize: isWide ? 20 : 16,
+                                  color: colorScheme.onPrimary.withOpacity(0.9),
+                                  height: 1.5,
+                                ),
+                                textAlign: isWide ? TextAlign.left : TextAlign.center,
+                              ),
+                              const SizedBox(height: 30),
+                              Wrap(
+                                spacing: 16,
+                                runSpacing: 16,
+                                alignment: isWide ? WrapAlignment.start : WrapAlignment.center,
+                                children: [
+                                  FilledButton.icon(
+                                    onPressed: () => _openUrl(_playStoreUrl),
+                                    icon: const Icon(Icons.android),
+                                    label: const Text('Android App'),
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: colorScheme.onPrimary,
+                                      foregroundColor: colorScheme.primary,
+                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                    ),
+                                  ),
+                                  FilledButton.icon(
+                                    onPressed: () => _openUrl(_appStoreUrl),
+                                    icon: const Icon(Icons.apple),
+                                    label: const Text('iOS App'),
+                                    style: FilledButton.styleFrom(
+                                      backgroundColor: colorScheme.onPrimary,
+                                      foregroundColor: colorScheme.primary,
+                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                    ),
+                                  ),
+                                  OutlinedButton.icon(
+                                    onPressed: () => _openUrl(_donationUrl),
+                                    icon: const Icon(Icons.favorite_border),
+                                    label: const Text('Donate Now'),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: colorScheme.onPrimary,
+                                      side: BorderSide(color: colorScheme.onPrimary),
+                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
