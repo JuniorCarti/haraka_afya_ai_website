@@ -551,3 +551,192 @@ Future<void> _openUrl(Uri url) async {
               ),
             ),
           ),
+           // Contact Section
+          SliverToBoxAdapter(
+            key: _contactKey,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.surface,
+                    colorScheme.surface.withOpacity(0.9),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Get In Touch',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'We\'d love to hear from you',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: colorScheme.onSurface.withOpacity(0.8),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: isWide ? 1000 : 600,
+                    child: Card(
+                      elevation: 8,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (isWide) ...[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Contact Information',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: colorScheme.onSurface,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30),
+                                    _buildContactInfo(
+                                      Icons.email,
+                                      'Email Us',
+                                      _email,
+                                      colorScheme.primary,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildContactInfo(
+                                      Icons.phone,
+                                      'Call Us',
+                                      _phone,
+                                      colorScheme.secondary,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    _buildContactInfo(
+                                      Icons.location_on,
+                                      'Visit Us',
+                                      'Nairobi, Kenya',
+                                      colorScheme.tertiary,
+                                    ),
+                                    const SizedBox(height: 40),
+                                    Text(
+                                      'Follow Us',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: colorScheme.onSurface,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const FaIcon(FontAwesomeIcons.facebook),
+                                          color: colorScheme.primary,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const FaIcon(FontAwesomeIcons.twitter),
+                                          color: colorScheme.primary,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const FaIcon(FontAwesomeIcons.instagram),
+                                          color: colorScheme.primary,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: const FaIcon(FontAwesomeIcons.linkedin),
+                                          color: colorScheme.primary,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 40),
+                            ],
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Text(
+                                    'Send Us a Message',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: colorScheme.onSurface,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Your Name',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Email Address',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  TextField(
+                                    maxLines: 4,
+                                    decoration: InputDecoration(
+                                      labelText: 'Your Message',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  FilledButton(
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Message sent!'),
+                                          behavior: SnackBarBehavior.floating,
+                                        ),
+                                      );
+                                    },
+                                    style: FilledButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(vertical: 16),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: const Text('Send Message'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
