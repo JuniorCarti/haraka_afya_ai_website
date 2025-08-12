@@ -345,3 +345,82 @@ Future<void> _openUrl(Uri url) async {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 40),
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      _buildStatCard('2,500+', 'Patients Supported'),
+                      _buildStatCard('15+', 'Community Programs'),
+                      _buildStatCard('98%', 'Satisfaction Rate'),
+                      _buildStatCard('50+', 'Trained Volunteers'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+ // Stories Section
+          SliverToBoxAdapter(
+            key: _storiesKey,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    colorScheme.primaryContainer,
+                    colorScheme.primaryContainer.withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Patient Stories',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Real journeys — resilience, support, and hope.',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: colorScheme.onPrimaryContainer.withOpacity(0.8),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: isWide ? 1200 : 600,
+                    child: Wrap(
+                      spacing: 24,
+                      runSpacing: 24,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        _buildStoryCard(
+                          'Grace\'s Journey',
+                          'After early screening Grace received timely treatment and is now mentoring others.',
+                          'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                        ),
+                        _buildStoryCard(
+                          'John\'s Story',
+                          'John found community support and financial help that kept his treatment going.',
+                          'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                        ),
+                        _buildStoryCard(
+                          'Aisha\'s Recovery',
+                          'Aisha\'s early diagnosis saved her life — now she volunteers with Haraka Afya.',
+                          'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1588&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
