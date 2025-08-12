@@ -740,3 +740,114 @@ Future<void> _openUrl(Uri url) async {
               ),
             ),
           ),
+           // Footer
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    colorScheme.primary,
+                    colorScheme.primary.withOpacity(0.9),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: colorScheme.onPrimary.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          'HA',
+                          style: TextStyle(
+                            color: colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Haraka Afya Cancer Support Trust',
+                        style: TextStyle(
+                          color: colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Compassionate care for cancer patients and families',
+                    style: TextStyle(
+                      color: colorScheme.onPrimary.withOpacity(0.8),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 10,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () => _scrollTo(_heroKey),
+                        child: Text(
+                          'Home',
+                          style: TextStyle(color: colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _scrollTo(_storiesKey),
+                        child: Text(
+                          'Stories',
+                          style: TextStyle(color: colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _scrollTo(_programsKey),
+                        child: Text(
+                          'Programs',
+                          style: TextStyle(color: colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _scrollTo(_teamKey),
+                        child: Text(
+                          'Team',
+                          style: TextStyle(color: colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => _scrollTo(_contactKey),
+                        child: Text(
+                          'Contact',
+                          style: TextStyle(color: colorScheme.onPrimary),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  Text(
+                    '© ${DateTime.now().year} Haraka Afya Cancer Support Trust. All rights reserved.',
+                    style: TextStyle(
+                      color: colorScheme.onPrimary.withOpacity(0.6),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
