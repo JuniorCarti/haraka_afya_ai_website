@@ -29,3 +29,28 @@ class HarakaAfyaWebsite extends StatelessWidget {
     );
   }
 }
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> with SingleTickerProviderStateMixin {
+  final _scrollController = ScrollController();
+  final _heroKey = GlobalKey();
+  final _storiesKey = GlobalKey();
+  final _programsKey = GlobalKey();
+  final _teamKey = GlobalKey();
+  final _contactKey = GlobalKey();
+  
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+
+  // Replace these with your actual URLs
+  final _playStoreUrl = Uri.parse('https://play.google.com/store/apps/details?id=com.example.haraka_afya');
+  final _appStoreUrl = Uri.parse('https://apps.apple.com/app/idXXXXXXXXX');
+  final _donationUrl = Uri.parse('https://example.org/donate');
+  final _email = 'info@harakaafya.org';
+  final _phone = '+254 745 8432 29';
