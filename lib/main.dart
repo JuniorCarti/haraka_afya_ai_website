@@ -92,3 +92,20 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
       curve: Curves.easeInOut,
     );
   }
+Future<void> _openUrl(Uri url) async {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open link')),
+      );
+    }
+  }
+
+  Widget _buildNavButton(String label, GlobalKey key) {
+    return TextButton(
+      onPressed: () => _scrollTo(key),
+      style: TextButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onBackground,
+      ),
+      child: Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+    );
+  }
