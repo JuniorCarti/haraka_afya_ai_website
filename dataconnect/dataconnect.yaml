@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "harakaafyaaiwebsite"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "harakaafyaaiwebsite-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

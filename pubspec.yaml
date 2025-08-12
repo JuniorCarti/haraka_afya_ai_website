@@ -17,6 +17,7 @@ dependencies:
   font_awesome_flutter: ^10.9.0
 
   cupertino_icons: ^1.0.8
+  js: ^0.7.2
 
 dev_dependencies:
   flutter_test:
