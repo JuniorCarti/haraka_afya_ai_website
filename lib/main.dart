@@ -109,3 +109,84 @@ Future<void> _openUrl(Uri url) async {
       child: Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
     );
   }
+ @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isWide = MediaQuery.of(context).size.width > 900;
+    final isMedium = MediaQuery.of(context).size.width > 600;
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          // App Bar
+          SliverAppBar(
+            expandedHeight: isWide ? 120 : 100,
+            floating: true,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              collapseMode: CollapseMode.pin,
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      colorScheme.primary.withOpacity(0.9),
+                      colorScheme.primary.withOpacity(0.7),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+              title: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    // Logo
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: colorScheme.onPrimary.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'HA',
+                        style: TextStyle(
+                          color: colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Haraka Afya',
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (isWide) ...[
+                      _buildNavButton('Home', _heroKey),
+                      _buildNavButton('Stories', _storiesKey),
+                      _buildNavButton('Programs', _programsKey),
+                      _buildNavButton('Team', _teamKey),
+                      _buildNavButton('Contact', _contactKey),
+                      const SizedBox(width: 12),
+                      ElevatedButton.icon(
+                        onPressed: () => _openUrl(_donationUrl),
+                        icon: const Icon(Icons.favorite, size: 18),
+                        label: const Text('Donate'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.onPrimary,
+                          foregroundColor: colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
