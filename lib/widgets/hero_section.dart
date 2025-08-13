@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:haraka_afya_ai_website/utils/constants.dart';
 import 'package:haraka_afya_ai_website/utils/responsive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HeroSection extends StatefulWidget {
   final GlobalKey sectionKey;
@@ -20,28 +21,35 @@ class HeroSection extends StatefulWidget {
 }
 
 class _HeroSectionState extends State<HeroSection> {
-  final PageController _pageController = PageController();
+  final PageController _pageController = PageController(viewportFraction: 0.9);
   Timer? _timer;
   int _currentPage = 0;
+  bool _isDownloading = false;
 
   final List<String> _imageUrls = [
-    'https://plus.unsplash.com/premium_photo-1663047725430-f855f465b6a4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGVhbGluZ3xlbnwwfDB8MHx8fDA%3D',
-    'https://plus.unsplash.com/premium_photo-1744491220300-39cf2b24ccd1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDl8fGhlYWxpbmd8ZW58MHwwfDB8fHww',
-    'https://images.unsplash.com/photo-1502139214982-d0ad755818d8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjB8fGhlYWxpbmd8ZW58MHwwfDB8fHww',
+    'https://plus.unsplash.com/premium_photo-1663047725430-f855f465b6a4?auto=format&fit=max&w=1500',
+    'https://plus.unsplash.com/premium_photo-1744491220300-39cf2b24ccd1?auto=format&fit=max&w=1500',
+    'https://images.unsplash.com/photo-1502139214982-d0ad755818d8?auto=format&fit=max&w=1500',
+    'https://images.unsplash.com/photo-1508175749578-259ded3db070?auto=format&fit=max&w=1500'
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
+void initState() {
+  super.initState();
+  _startTimer();
+}
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _pageController.dispose();
-    super.dispose();
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  _precacheImages();
+}
+
+void _precacheImages() {
+  for (final url in _imageUrls) {
+    precacheImage(NetworkImage(url), context);
   }
+}
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
@@ -52,35 +60,65 @@ class _HeroSectionState extends State<HeroSection> {
       }
       _pageController.animateToPage(
         _currentPage,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOutCubic,
       );
     });
+  }
+
+  Future<void> _downloadAndroidApp() async {
+    const apkUrl = 'https://github.com/JuniorCarti/Haraka-Afya_AI/releases/download/v3.0.0/app-debug.apk';
+    
+    setState(() {
+      _isDownloading = true;
+    });
+
+    try {
+      if (await canLaunchUrl(Uri.parse(apkUrl))) {
+        await launchUrl(
+          Uri.parse(apkUrl),
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not launch download link')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    } finally {
+      setState(() {
+        _isDownloading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     return SliverToBoxAdapter(
       key: widget.sectionKey,
       child: Container(
-        height: isDesktop ? 700 : 600,
+        height: isDesktop ? 750 : 650,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              colorScheme.primary.withOpacity(0.9),
-              colorScheme.primary.withOpacity(0.7),
+              colorScheme.primary.withOpacity(0.95),
+              colorScheme.primary.withOpacity(0.8),
             ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: isDesktop ? 80 : 24,
-            vertical: 40,
+            horizontal: isDesktop ? 100 : 24,
+            vertical: 60,
           ),
           child: Row(
             children: [
@@ -91,30 +129,31 @@ class _HeroSectionState extends State<HeroSection> {
                     scale: widget.scaleAnimation,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment:
-                          isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                      crossAxisAlignment: isDesktop 
+                          ? CrossAxisAlignment.start 
+                          : CrossAxisAlignment.center,
                       children: [
                         Text(
                           '${AppConstants.appTitle}\n${AppConstants.appSubtitle}',
-                          style: TextStyle(
-                            fontSize: isDesktop ? 48 : 32,
-                            fontWeight: FontWeight.bold,
+                          style: textTheme.displayLarge?.copyWith(
+                            fontSize: isDesktop ? 56 : 36,
+                            fontWeight: FontWeight.w900,
                             color: colorScheme.onPrimary,
-                            height: 1.2,
+                            height: 1.1,
                           ),
                           textAlign: isDesktop ? TextAlign.left : TextAlign.center,
                         ),
                         const SizedBox(height: 20),
                         Text(
                           AppConstants.appDescription,
-                          style: TextStyle(
+                          style: textTheme.bodyLarge?.copyWith(
                             fontSize: isDesktop ? 20 : 16,
-                            color: colorScheme.onPrimary.withOpacity(0.9),
-                            height: 1.5,
+                            color: colorScheme.onPrimary.withOpacity(0.85),
+                            height: 1.6,
                           ),
                           textAlign: isDesktop ? TextAlign.left : TextAlign.center,
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 36),
                         _buildActionButtons(context, isDesktop),
                       ],
                     ),
@@ -122,59 +161,81 @@ class _HeroSectionState extends State<HeroSection> {
                 ),
               ),
               if (isDesktop) ...[
-                const SizedBox(width: 40),
+                const SizedBox(width: 60),
                 Expanded(
                   child: FadeTransition(
                     opacity: widget.fadeAnimation,
                     child: ScaleTransition(
                       scale: widget.scaleAnimation,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Stack(
-                          children: [
-                            SizedBox(
-                              height: 500,
-                              child: PageView.builder(
-                                controller: _pageController,
-                                itemCount: _imageUrls.length,
-                                onPageChanged: (index) {
-                                  setState(() {
-                                    _currentPage = index;
-                                  });
-                                },
-                                itemBuilder: (context, index) {
-                                  return Image.network(
-                                    _imageUrls[index],
-                                    fit: BoxFit.cover,
-                                    height: 500,
-                                  );
-                                },
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 20,
-                              left: 0,
-                              right: 0,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                  _imageUrls.length,
-                                  (index) => Container(
-                                    width: 10,
-                                    height: 10,
-                                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _currentPage == index
-                                          ? colorScheme.onPrimary
-                                          : colorScheme.onPrimary.withOpacity(0.5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 520,
+                            child: Stack(
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                PageView.builder(
+                                  controller: _pageController,
+                                  itemCount: _imageUrls.length,
+                                  onPageChanged: (index) {
+                                    setState(() {
+                                      _currentPage = index;
+                                    });
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.network(
+                                          _imageUrls[index],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return Container(
+                                              color: Colors.black12,
+                                              child: Center(
+                                                child: CircularProgressIndicator(
+                                                  value: loadingProgress.expectedTotalBytes != null
+                                                      ? loadingProgress.cumulativeBytesLoaded /
+                                                          loadingProgress.expectedTotalBytes!
+                                                      : null,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Positioned(
+                                  bottom: 20,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(
+                                      _imageUrls.length,
+                                      (index) => AnimatedContainer(
+                                        duration: const Duration(milliseconds: 300),
+                                        width: _currentPage == index ? 24 : 10,
+                                        height: 10,
+                                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: _currentPage == index
+                                              ? colorScheme.onPrimary
+                                              : colorScheme.onPrimary.withOpacity(0.5),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -191,45 +252,77 @@ class _HeroSectionState extends State<HeroSection> {
     final colorScheme = Theme.of(context).colorScheme;
     
     return Wrap(
-      spacing: 16,
+      spacing: 20,
       runSpacing: 16,
       alignment: isDesktop ? WrapAlignment.start : WrapAlignment.center,
       children: [
         FilledButton.icon(
-          onPressed: () => _launchUrl(AppConstants.playStoreUrl),
-          icon: const Icon(Icons.android),
-          label: const Text('Android App'),
+          onPressed: _isDownloading ? null : _downloadAndroidApp,
+          icon: _isDownloading
+              ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
+              : const Icon(Icons.android, size: 24),
+          label: Text(
+            _isDownloading ? 'Downloading...' : 'Android App',
+            style: const TextStyle(fontSize: 16),
+          ),
           style: FilledButton.styleFrom(
             backgroundColor: colorScheme.onPrimary,
             foregroundColor: colorScheme.primary,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 3,
           ),
         ),
         FilledButton.icon(
           onPressed: () => _launchUrl(AppConstants.appStoreUrl),
-          icon: const Icon(Icons.apple),
-          label: const Text('iOS App'),
+          icon: const Icon(Icons.apple, size: 24),
+          label: const Text('iOS App', style: TextStyle(fontSize: 16)),
           style: FilledButton.styleFrom(
             backgroundColor: colorScheme.onPrimary,
             foregroundColor: colorScheme.primary,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 3,
           ),
         ),
         OutlinedButton.icon(
           onPressed: () => _launchUrl(AppConstants.donationUrl),
-          icon: const Icon(Icons.favorite_border),
-          label: const Text('Donate Now'),
+          icon: const Icon(Icons.favorite_border, size: 24),
+          label: const Text('Donate Now', style: TextStyle(fontSize: 16)),
           style: OutlinedButton.styleFrom(
             foregroundColor: colorScheme.onPrimary,
-            side: BorderSide(color: colorScheme.onPrimary),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            side: BorderSide(color: colorScheme.onPrimary, width: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
       ],
     );
   }
 
-  void _launchUrl(String url) {
-    // Implement URL launching
+  Future<void> _launchUrl(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(
+        Uri.parse(url),
+        mode: LaunchMode.externalApplication,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch $url')),
+      );
+    }
   }
 }
