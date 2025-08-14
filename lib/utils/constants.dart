@@ -25,7 +25,7 @@ class AppConstants {
   
   // Contact
   static const String email = 'info@harakaafya.org';
-  static const String phone = '+254 745 8432 29';
+  static const String phone = '+254 745 8443 29';
   static const String location = 'Nairobi, Kenya';
   
   // Social Media
@@ -42,24 +42,27 @@ class AppConstants {
     'Trained Volunteers': '50+',
   };
   
+
   // Team Members
-  static const List<Map<String, String>> teamMembers = [
-    {
-      'name': 'Ridge Junior Abuto',
-      'role': 'Founder & CEO',
-      'image': 'https://images.unsplash.com/photo-1745163190343-fe6f1a3aaa1c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTZ8fG1lbiUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D'
-    },
-    {
-      'name': 'Samuel Otieno',
-      'role': 'Community Lead',
-      'image': 'https://images.unsplash.com/photo-1662638035662-455f32fd02ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzJ8fG1lbiUyMGltYWdlc3xlbnwwfHwwfHx8MA%3D%3D'
-    },
-    {
-      'name': 'Joy Mutanu',
-      'role': 'Co-Founder',
-      'image': 'https://images.unsplash.com/photo-1611417361507-7d77bbc20a73?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fHdvbWVuJTIwaW1hZ2VzfGVufDB8fDB8fHww'
-    }
-  ];
+static const List<Map<String, String>> teamMembers = [
+  {
+    'name': 'Ridge Junior Abuto',
+    'role': 'Founder & Lead Developer',
+    'image': 'assets/images/ridge.jpg',
+  },
+   {
+    'name': 'Joy Mutanu',
+    'role': 'Co-Founder',
+    'image': 'assets/images/joy.jpg',
+  },
+  {
+    'name': 'Samuel Otieno',
+    'role': 'Community Lead',
+    'image': 'assets/images/samuel.jpg',
+  },
+ 
+];
+
   
   // Programs
   static const List<Map<String, dynamic>> programs = [
