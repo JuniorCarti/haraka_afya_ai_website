@@ -95,7 +95,7 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
           // About Section
           SliverToBoxAdapter(
             child: SectionTemplate(
-              title: 'About Our Mission',
+              title: 'Our Mission',
               child: Column(
                 children: [
                   SizedBox(
