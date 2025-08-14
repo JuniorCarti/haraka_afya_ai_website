@@ -84,13 +84,14 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
             scrollToTeam: () => _scrollTo(_teamKey),
             scrollToContact: () => _scrollTo(_contactKey),
           ),
-          
+
           HeroSection(
             key: _heroKey,
             fadeAnimation: _fadeAnimation,
-            scaleAnimation: _scaleAnimation, sectionKey: _heroKey,
+            scaleAnimation: _scaleAnimation,
+            sectionKey: _heroKey,
           ),
-          
+
           // About Section
           SliverToBoxAdapter(
             child: SectionTemplate(
@@ -114,18 +115,18 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                     spacing: 20,
                     runSpacing: 20,
                     alignment: WrapAlignment.center,
-                    children: AppConstants.stats.entries.map((entry) {
-                      return StatCard(
-                        value: entry.value,
-                        label: entry.key,
-                      );
-                    }).toList(),
+                    children: AppConstants.stats.entries
+                        .map<Widget>((entry) => StatCard(
+                              value: entry.value,
+                              label: entry.key,
+                            ))
+                        .toList(),
                   ),
                 ],
               ),
             ),
           ),
-          
+
           // Stories Section
           SliverToBoxAdapter(
             key: _storiesKey,
@@ -139,19 +140,19 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                   spacing: 24,
                   runSpacing: 24,
                   alignment: WrapAlignment.center,
-                  children: AppConstants.stories.map((story) {
-                    return StoryCard(
-                      title: story['title']!,
-                      excerpt: story['excerpt']!,
-                      imageUrl: story['image']!,
-                      onTap: () => _showStoryModal(context, story),
-                    );
-                  }).toList(),
+                  children: AppConstants.stories
+                      .map<Widget>((story) => StoryCard(
+                            title: story['title']!,
+                            excerpt: story['excerpt']!,
+                            imageUrl: story['image']!,
+                            onTap: () => _showStoryModal(context, story),
+                          ))
+                      .toList(),
                 ),
               ),
             ),
           ),
-          
+
           // Programs Section
           SliverToBoxAdapter(
             key: _programsKey,
@@ -163,25 +164,27 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                   spacing: 24,
                   runSpacing: 24,
                   alignment: WrapAlignment.center,
-                  children: AppConstants.programs.map((program) {
-                    return ProgramCard(
-                      icon: program['icon'] as IconData,
-                      title: program['title'] as String,
-                      description: program['description'] as String,
-                      color: program['color'] as Color,
-                    );
-                  }).toList(),
+                  children: AppConstants.programs
+                      .map<Widget>((program) => ProgramCard(
+                            icon: program['icon'] as IconData,
+                            title: program['title'] as String,
+                            description: program['description'] as String,
+                            color: program['color'] as Color,
+                            imageUrl: program['imageUrl'] as String, // ✅ Added
+                          ))
+                      .toList(),
                 ),
               ),
             ),
           ),
-          
+
           // Team Section
           SliverToBoxAdapter(
             key: _teamKey,
             child: SectionTemplate(
               title: 'Meet Our Team',
-              subtitle: 'Passionate professionals dedicated to making a difference',
+              subtitle:
+                  'Passionate professionals dedicated to making a difference',
               backgroundColor: AppConstants.secondaryColor.withOpacity(0.1),
               child: SizedBox(
                 width: Responsive.isMobile(context) ? double.infinity : 1200,
@@ -189,21 +192,21 @@ class _LandingPageState extends State<LandingPage> with SingleTickerProviderStat
                   spacing: 40,
                   runSpacing: 40,
                   alignment: WrapAlignment.center,
-                  children: AppConstants.teamMembers.map((member) {
-                    return TeamMember(
-                      name: member['name']!,
-                      role: member['role']!,
-                      imageUrl: member['image']!,
-                    );
-                  }).toList(),
+                  children: AppConstants.teamMembers
+                      .map<Widget>((member) => TeamMember(
+                            name: member['name']!,
+                            role: member['role']!,
+                            imageUrl: member['image']!,
+                          ))
+                      .toList(),
                 ),
               ),
             ),
           ),
-          
+
           // Contact Section
           ContactSection(key: _contactKey),
-          
+
           // Footer
           const Footer(),
         ],
