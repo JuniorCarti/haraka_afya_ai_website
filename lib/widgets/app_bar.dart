@@ -21,6 +21,7 @@ class HarakaAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
+    final isTablet = Responsive.isTablet(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     return SliverAppBar(
@@ -41,69 +42,170 @@ class HarakaAppBar extends StatelessWidget {
             ),
           ),
         ),
-        title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              // Logo
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: colorScheme.onPrimary.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  'HA',
-                  style: TextStyle(
-                    color: colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+        titlePadding: const EdgeInsets.symmetric(horizontal: 16),
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            if (isDesktop) {
+              // Full navigation
+              return Row(
+                children: [
+                  _buildLogo(colorScheme),
+                  const SizedBox(width: 12),
+                  Flexible(
+                    child: Text(
+                      AppConstants.appTitle,
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      maxLines: 1,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                AppConstants.appTitle,
-                style: TextStyle(
-                  color: colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              if (isDesktop) ...[
-                _buildNavButton('Home', scrollToHero, context),
-                _buildNavButton('Stories', scrollToStories, context),
-                _buildNavButton('Programs', scrollToPrograms, context),
-                _buildNavButton('Team', scrollToTeam, context),
-                _buildNavButton('Contact', scrollToContact, context),
-                const SizedBox(width: 12),
-                ElevatedButton.icon(
-                  onPressed: () => scrollToContact(),
-                  icon: const Icon(Icons.favorite, size: 18),
-                  label: const Text('Donate'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.onPrimary,
-                    foregroundColor: colorScheme.primary,
+                  const Spacer(),
+                  _buildNavButton('Home', scrollToHero, context),
+                  _buildNavButton('Stories', scrollToStories, context),
+                  _buildNavButton('Programs', scrollToPrograms, context),
+                  _buildNavButton('Team', scrollToTeam, context),
+                  _buildNavButton('Contact', scrollToContact, context),
+                  const SizedBox(width: 12),
+                  _buildDonateButton(colorScheme),
+                ],
+              );
+            } else if (isTablet) {
+              // Tablet: menu for nav, but donate button stays visible
+              return Row(
+                children: [
+                  _buildLogo(colorScheme),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      AppConstants.appTitle,
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      maxLines: 1,
+                    ),
                   ),
-                ),
-              ],
-            ],
-          ),
+                  _buildPopupMenu(includeDonate: false),
+                  const SizedBox(width: 8),
+                  _buildDonateButton(colorScheme),
+                ],
+              );
+            } else {
+              // Mobile: all in menu
+              return Row(
+                children: [
+                  _buildLogo(colorScheme),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      AppConstants.appTitle,
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+                  _buildPopupMenu(includeDonate: true),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
   }
 
-  Widget _buildNavButton(String label, VoidCallback onTap, BuildContext context) {
+  Widget _buildLogo(ColorScheme colorScheme) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: colorScheme.onPrimary.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        'HA',
+        style: TextStyle(
+          color: colorScheme.onPrimary,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavButton(
+    String label,
+    VoidCallback onTap,
+    BuildContext context,
+  ) {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
       ),
-      child: Text(
-        label,
-        style: const TextStyle(fontWeight: FontWeight.w500),
+      child: Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+    );
+  }
+
+  Widget _buildDonateButton(ColorScheme colorScheme) {
+    return ElevatedButton.icon(
+      onPressed: scrollToContact,
+      icon: const Icon(Icons.favorite, size: 18),
+      label: const Text('Donate'),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: colorScheme.onPrimary,
+        foregroundColor: colorScheme.primary,
       ),
+    );
+  }
+
+  Widget _buildPopupMenu({required bool includeDonate}) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.menu, color: Colors.white),
+      onSelected: (value) {
+        switch (value) {
+          case 'Home':
+            scrollToHero();
+            break;
+          case 'Stories':
+            scrollToStories();
+            break;
+          case 'Programs':
+            scrollToPrograms();
+            break;
+          case 'Team':
+            scrollToTeam();
+            break;
+          case 'Contact':
+            scrollToContact();
+            break;
+          case 'Donate':
+            scrollToContact();
+            break;
+        }
+      },
+      itemBuilder: (context) {
+        final List<PopupMenuEntry<String>> items = [
+          const PopupMenuItem(value: 'Home', child: Text('Home')),
+          const PopupMenuItem(value: 'Stories', child: Text('Stories')),
+          const PopupMenuItem(value: 'Programs', child: Text('Programs')),
+          const PopupMenuItem(value: 'Team', child: Text('Team')),
+          const PopupMenuItem(value: 'Contact', child: Text('Contact')),
+        ];
+        if (includeDonate) {
+          items.add(const PopupMenuDivider());
+          items.add(
+            const PopupMenuItem(value: 'Donate', child: Text('Donate')),
+          );
+        }
+        return items;
+      },
     );
   }
 }

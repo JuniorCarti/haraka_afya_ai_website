@@ -21,239 +21,210 @@ class HeroSection extends StatefulWidget {
 }
 
 class _HeroSectionState extends State<HeroSection> {
-  final PageController _pageController = PageController(viewportFraction: 0.9);
   Timer? _timer;
   int _currentPage = 0;
   bool _isDownloading = false;
 
   final List<String> _imageUrls = [
-    'https://plus.unsplash.com/premium_photo-1663047725430-f855f465b6a4?auto=format&fit=max&w=1500',
-    'https://plus.unsplash.com/premium_photo-1744491220300-39cf2b24ccd1?auto=format&fit=max&w=1500',
-    'https://images.unsplash.com/photo-1502139214982-d0ad755818d8?auto=format&fit=max&w=1500',
-    'https://images.unsplash.com/photo-1508175749578-259ded3db070?auto=format&fit=max&w=1500'
+    "https://plus.unsplash.com/premium_photo-1667762241847-37471e8c8bc0?w=1500&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1500&auto=format&fit=crop&q=60",
+    "https://images.unsplash.com/photo-1487956382158-bb926046304a?w=1500&auto=format&fit=crop&q=60",
   ];
 
   @override
-void initState() {
-  super.initState();
-  _startTimer();
-}
-
-@override
-void didChangeDependencies() {
-  super.didChangeDependencies();
-  _precacheImages();
-}
-
-void _precacheImages() {
-  for (final url in _imageUrls) {
-    precacheImage(NetworkImage(url), context);
+  void initState() {
+    super.initState();
+    _startTimer();
   }
-}
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _precacheImages();
+  }
+
+  void _precacheImages() {
+    for (final url in _imageUrls) {
+      precacheImage(NetworkImage(url), context);
+    }
+  }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (_currentPage < _imageUrls.length - 1) {
-        _currentPage++;
-      } else {
-        _currentPage = 0;
-      }
-      _pageController.animateToPage(
-        _currentPage,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOutCubic,
-      );
+      setState(() {
+        _currentPage = (_currentPage + 1) % _imageUrls.length;
+      });
     });
   }
 
   Future<void> _downloadAndroidApp() async {
-    const apkUrl = 'https://github.com/JuniorCarti/Haraka-Afya_AI/releases/download/v3.0.0/app-debug.apk';
-    
-    setState(() {
-      _isDownloading = true;
-    });
+    const apkUrl =
+        'https://github.com/JuniorCarti/Haraka-Afya_AI/releases/download/v3.0.0/app-debug.apk';
+
+    setState(() => _isDownloading = true);
 
     try {
       if (await canLaunchUrl(Uri.parse(apkUrl))) {
-        await launchUrl(
-          Uri.parse(apkUrl),
-          mode: LaunchMode.externalApplication,
-        );
+        await launchUrl(Uri.parse(apkUrl), mode: LaunchMode.externalApplication);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not launch download link')),
-        );
+        _showSnackBar('Could not launch download link');
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
+      _showSnackBar('Error: ${e.toString()}');
     } finally {
-      setState(() {
-        _isDownloading = false;
-      });
+      setState(() => _isDownloading = false);
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  Future<void> _launchUrl(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    } else {
+      _showSnackBar('Could not launch $url');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
-    final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return SliverToBoxAdapter(
       key: widget.sectionKey,
-      child: Container(
-        height: isDesktop ? 750 : 650,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              colorScheme.primary.withOpacity(0.95),
-              colorScheme.primary.withOpacity(0.8),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isDesktop ? 100 : 24,
-            vertical: 60,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: FadeTransition(
-                  opacity: widget.fadeAnimation,
-                  child: ScaleTransition(
-                    scale: widget.scaleAnimation,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: isDesktop 
-                          ? CrossAxisAlignment.start 
-                          : CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${AppConstants.appTitle}\n${AppConstants.appSubtitle}',
-                          style: textTheme.displayLarge?.copyWith(
-                            fontSize: isDesktop ? 56 : 36,
-                            fontWeight: FontWeight.w900,
-                            color: colorScheme.onPrimary,
-                            height: 1.1,
-                          ),
-                          textAlign: isDesktop ? TextAlign.left : TextAlign.center,
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          AppConstants.appDescription,
-                          style: textTheme.bodyLarge?.copyWith(
-                            fontSize: isDesktop ? 20 : 16,
-                            color: colorScheme.onPrimary.withOpacity(0.85),
-                            height: 1.6,
-                          ),
-                          textAlign: isDesktop ? TextAlign.left : TextAlign.center,
-                        ),
-                        const SizedBox(height: 36),
-                        _buildActionButtons(context, isDesktop),
-                      ],
-                    ),
-                  ),
-                ),
+      child: Stack(
+        children: [
+          // Background slideshow
+          SizedBox(
+            height: screenHeight,
+            width: double.infinity,
+            child: AnimatedSwitcher(
+              duration: const Duration(seconds: 2),
+              switchInCurve: Curves.easeInOut,
+              switchOutCurve: Curves.easeInOut,
+              child: Image.network(
+                _imageUrls[_currentPage],
+                key: ValueKey<String>(_imageUrls[_currentPage]),
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: screenHeight,
               ),
-              if (isDesktop) ...[
-                const SizedBox(width: 60),
-                Expanded(
-                  child: FadeTransition(
-                    opacity: widget.fadeAnimation,
-                    child: ScaleTransition(
-                      scale: widget.scaleAnimation,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 520,
-                            child: Stack(
-                              alignment: Alignment.bottomCenter,
-                              children: [
-                                PageView.builder(
-                                  controller: _pageController,
-                                  itemCount: _imageUrls.length,
-                                  onPageChanged: (index) {
-                                    setState(() {
-                                      _currentPage = index;
-                                    });
-                                  },
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(
-                                          _imageUrls[index],
-                                          fit: BoxFit.cover,
-                                          width: double.infinity,
-                                          loadingBuilder: (context, child, loadingProgress) {
-                                            if (loadingProgress == null) return child;
-                                            return Container(
-                                              color: Colors.black12,
-                                              child: Center(
-                                                child: CircularProgressIndicator(
-                                                  value: loadingProgress.expectedTotalBytes != null
-                                                      ? loadingProgress.cumulativeBytesLoaded /
-                                                          loadingProgress.expectedTotalBytes!
-                                                      : null,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Positioned(
-                                  bottom: 20,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                      _imageUrls.length,
-                                      (index) => AnimatedContainer(
-                                        duration: const Duration(milliseconds: 300),
-                                        width: _currentPage == index ? 24 : 10,
-                                        height: 10,
-                                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: _currentPage == index
-                                              ? colorScheme.onPrimary
-                                              : colorScheme.onPrimary.withOpacity(0.5),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ],
+            ),
           ),
+
+          // Teal gradient overlay
+          Container(
+            height: screenHeight,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.teal.shade800.withOpacity(0.85),
+                  Colors.teal.shade400.withOpacity(0.55),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.5, 1.0],
+              ),
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: isDesktop ? 100 : 24,
+              vertical: 60,
+            ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (isDesktop) {
+                  // Desktop layout
+                  return Row(
+                    children: [
+                      Expanded(child: _buildTextContent(isDesktop, textTheme)),
+                      const SizedBox(width: 60),
+                      Expanded(child: _buildImagePreview(screenHeight)),
+                    ],
+                  );
+                } else {
+                  // Mobile/tablet layout
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildTextContent(isDesktop, textTheme),
+                      const SizedBox(height: 30),
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextContent(bool isDesktop, TextTheme textTheme) {
+    return FadeTransition(
+      opacity: widget.fadeAnimation,
+      child: ScaleTransition(
+        scale: widget.scaleAnimation,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment:
+              isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          children: [
+            Text(
+              '${AppConstants.appTitle}\n${AppConstants.appSubtitle}',
+              style: textTheme.displayLarge?.copyWith(
+                fontSize: isDesktop ? 56 : 28,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+                height: 1.1,
+              ),
+              textAlign: isDesktop ? TextAlign.left : TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              AppConstants.appDescription,
+              style: textTheme.bodyLarge?.copyWith(
+                fontSize: isDesktop ? 20 : 14,
+                color: Colors.white70,
+                height: 1.6,
+              ),
+              textAlign: isDesktop ? TextAlign.left : TextAlign.center,
+            ),
+            const SizedBox(height: 36),
+            _buildActionButtons(isDesktop),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildActionButtons(BuildContext context, bool isDesktop) {
-    final colorScheme = Theme.of(context).colorScheme;
-    
+  Widget _buildImagePreview(double screenHeight) {
+    return AnimatedSwitcher(
+      duration: const Duration(seconds: 2),
+      switchInCurve: Curves.easeInOut,
+      switchOutCurve: Curves.easeInOut,
+      child: ClipRRect(
+        key: ValueKey<String>(_imageUrls[_currentPage]),
+        borderRadius: BorderRadius.circular(20),
+        child: Image.network(
+          _imageUrls[_currentPage],
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: screenHeight * 0.7,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButtons(bool isDesktop) {
     return Wrap(
-      spacing: 20,
-      runSpacing: 16,
+      spacing: 12,
+      runSpacing: 12,
       alignment: isDesktop ? WrapAlignment.start : WrapAlignment.center,
       children: [
         FilledButton.icon(
@@ -273,9 +244,10 @@ void _precacheImages() {
             style: const TextStyle(fontSize: 16),
           ),
           style: FilledButton.styleFrom(
-            backgroundColor: colorScheme.onPrimary,
-            foregroundColor: colorScheme.primary,
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.teal.shade900,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -287,9 +259,10 @@ void _precacheImages() {
           icon: const Icon(Icons.apple, size: 24),
           label: const Text('iOS App', style: TextStyle(fontSize: 16)),
           style: FilledButton.styleFrom(
-            backgroundColor: colorScheme.onPrimary,
-            foregroundColor: colorScheme.primary,
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.teal.shade900,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -298,12 +271,16 @@ void _precacheImages() {
         ),
         OutlinedButton.icon(
           onPressed: () => _launchUrl(AppConstants.donationUrl),
-          icon: const Icon(Icons.favorite_border, size: 24),
-          label: const Text('Donate Now', style: TextStyle(fontSize: 16)),
+          icon: const Icon(Icons.favorite_border,
+              size: 24, color: Colors.white),
+          label: const Text(
+            'Donate Now',
+            style: TextStyle(fontSize: 16, color: Colors.white),
+          ),
           style: OutlinedButton.styleFrom(
-            foregroundColor: colorScheme.onPrimary,
-            side: BorderSide(color: colorScheme.onPrimary, width: 2),
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            side: const BorderSide(color: Colors.white, width: 2),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -311,18 +288,5 @@ void _precacheImages() {
         ),
       ],
     );
-  }
-
-  Future<void> _launchUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(
-        Uri.parse(url),
-        mode: LaunchMode.externalApplication,
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not launch $url')),
-      );
-    }
   }
 }
