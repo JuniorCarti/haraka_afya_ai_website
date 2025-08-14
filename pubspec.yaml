@@ -32,4 +32,6 @@ flutter:
 
 assets:
   - assets/images/logo.png
- 
+  - assets/images/ridge.jpg
+  - assets/images/samuel.jpg
+  - assets/images/joy.jpg
