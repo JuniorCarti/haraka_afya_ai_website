@@ -68,24 +68,28 @@ class AppConstants {
       'title': 'Screening & Education',
       'description': 'Community screening events & health education',
       'color': primaryColor,
+      'imageUrl': 'https://plus.unsplash.com/premium_photo-1673958771882-df5e5765b146?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c2NyZWVuaW5nfGVufDB8fDB8fHww',
     },
     {
       'icon': Icons.psychology,
       'title': 'Counselling',
       'description': 'One-on-one emotional & psychological support',
       'color': secondaryColor,
+      'imageUrl': 'https://images.unsplash.com/photo-1573495804664-b1c0849525af?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNvdW5zZWxsaW5nfGVufDB8fDB8fHww',
     },
     {
       'icon': Icons.group,
       'title': 'Support Groups',
       'description': 'Peer support & survivor networks',
       'color': Color(0xFFFFDDD2),
+      'imageUrl': 'https://images.unsplash.com/photo-1655720358066-2aab2a903ef8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c3VwcG9ydCUyMGdyb3Vwc3xlbnwwfHwwfHx8MA%3D%3D',
     },
     {
       'icon': Icons.favorite,
       'title': 'Financial Assistance',
       'description': 'Support for treatment costs & transport',
       'color': Color(0xFFE29578),
+      'imageUrl': 'https://images.unsplash.com/photo-1579460372796-3aa720f44e46?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fGZpbmFuY2lhbCUyMGFzc2lhdGFuY2V8ZW58MHx8MHx8fDA%3D',
     },
   ];
   
